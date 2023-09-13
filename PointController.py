@@ -48,6 +48,8 @@ def integrateData(excl_cloum,data,result_list):
 
 
 def initData(sheet_name):
+    mdbConfig.del_table(sheet_name)
+
     # 获取文件
     excl_file1 = pd.read_excel(uConfig.excl_path, sheet_name=sheet_name)
     excl_file2 = pd.read_excel(uConfig.excl_path, sheet_name="收点")
@@ -82,6 +84,7 @@ def insertData(sheet_name, table_cloum, list):
     msg = mdbConfig.insert_data(sheet_name, table_cloum, list)
 
 def getMsg(sheet_name,table_cloum,new_list):
+
     msg = mdbConfig.insert_data(sheet_name,table_cloum,new_list)
     return msg
 

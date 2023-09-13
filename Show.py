@@ -69,7 +69,7 @@ import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QVBoxLayout, QPushButton, QWidget, QStackedWidget
 from PyQt5 import QtWidgets
 from QCandyUi.CandyWindow import createWindow
-from DealShow import Ui_Form as wuhu
+from DealShow import DealShow as wuhu
 
 class MyDialog(QMainWindow):
     def __init__(self):
@@ -106,22 +106,22 @@ class MyDialog(QMainWindow):
             self.stackedWidget.setCurrentIndex(1)  # 切换到下一个页面
 
     def nextPage(self):
-        # 检查 exlc_lineEdit 和 mdb_lineEdit 是否都有内容
+        # Check if excl_lineEdit and mdb_lineEdit both have content
         excl_path = self.ui.excl_lineEdit.text()
         mdb_path = self.ui.mdb_lineEdit.text()
 
         if excl_path and mdb_path:
-            self.controller_window = createWindow(ShowDealWindow(), title="上传界面")
-            self.controller_window.show()
-            pass
+            # Create an instance of ShowDealWindow and set it as the current page in the stackedWidget
+            self.show_deal_window = createWindow(ShowDealWindow(excl_path, mdb_path),title="上传")
+            self.show_deal_window.show()
         else:
             QMessageBox.warning(self, "警告", "请先选择数据excl文件和数据库.mdb文件")
 
 
 class ShowDealWindow(QMainWindow):
-    def __init__(self):
+    def __init__(self,excl_path,mdb_path):
         super().__init__()
-        self.ui = wuhu()
+        self.ui = wuhu(excl_path,mdb_path)
         self.ui.setupUi(self)
 
 
@@ -129,7 +129,7 @@ class ShowDealWindow(QMainWindow):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    dialog = createWindow(MyDialog(), title="上传")
+    dialog = createWindow(MyDialog(), title="上传",ico_path="AI.png")
     dialog.show()
     sys.exit(app.exec_())
 

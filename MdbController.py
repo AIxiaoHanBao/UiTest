@@ -27,7 +27,6 @@ def del_table(sheet_name):
 
 
 def insert_data(sheet_name, fields, values):
-    del_table(sheet_name)
     # 连接到Access数据库
     db_file = uConfig.mdb_path
     conn_str = r"Driver={Microsoft Access Driver (*.mdb, *.accdb)};Dbq=" + db_file

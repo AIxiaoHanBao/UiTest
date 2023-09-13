@@ -38,6 +38,8 @@ def integrateData(excl_cloum,data,result_list):
 
 
 def initData(sheet_name):
+    mdbConfig.del_table(sheet_name)
+
     #获取文件
     excl_file = pd.read_excel(uConfig.excl_path, sheet_name=sheet_name)
     #获取到这个表格的字典(直接设置好特殊字段和自增字段
