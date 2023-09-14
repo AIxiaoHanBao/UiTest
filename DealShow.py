@@ -137,22 +137,23 @@ class DealShow(object):
         self.theard.start()
 
 class DataProcessingThread(QtCore.QThread):
-    def __init__(self, progressBar, table_select, information_text, excl_cloum_path,start_button,parent=None):
+    def __init__(self, progressBar, table_select, information_text, excl_cloum_path, start_button, parent=None):
         super(DataProcessingThread, self).__init__(parent)
         self.progressBar = progressBar
         self.table_select = table_select
         self.information_text = information_text
         self.excl_cloum_path = excl_cloum_path
-        self.start_button=start_button
+        self.start_button = start_button
+
     def run(self):
         self.start_button.setEnabled(False)
-        if  len(self.table_select)!=0:
+        if len(self.table_select) != 0:
             self.progressBar.setMaximum(len(self.table_select))
             self.progressBar.setValue(0)
             num = 0
             for item in self.table_select:
                 if re.search(r'_LINE$', item):
-                    new_list, table_cloum = lineFuncation.initData(item, self.excl_cloum_path )
+                    new_list, table_cloum = lineFuncation.initData(item, self.excl_cloum_path)
                     for i in new_list:
                         msg = lineFuncation.getMsg(item, table_cloum, i)
                         self.information_text.append("\n" + msg)
@@ -160,7 +161,7 @@ class DataProcessingThread(QtCore.QThread):
                         self.progressBar.setValue(num)
                     print("Processing _LINE:", item)
                 elif re.search(r'_POINT$', item):
-                    new_list, table_cloum = PointFuncation.initData(item,self.excl_cloum_path)
+                    new_list, table_cloum = PointFuncation.initData(item, self.excl_cloum_path)
                     for i in new_list:
                         msg = PointFuncation.getMsg(item, table_cloum, i)
                         self.information_text.append("\n" + msg)
@@ -168,6 +169,8 @@ class DataProcessingThread(QtCore.QThread):
                     self.progressBar.setValue(num)
                     print("Processing _POINT:", item)
 
+
+            self.information_text.append("\n" + "本次处理完成")
             self.start_button.setEnabled(True)
 
         else:
