@@ -14,7 +14,13 @@ def integrateData(excl_cloum,data,result_list):
     for i in excl_cloum:
         #自增字段的处理
         if i in uConfig.populate_fields:
-            populate_list = popConfig.populateCloum(data[i].tolist())
+            #如果自增字段中存在重复的获取其中一列即可
+            if False in data[i].duplicated():
+                populate_list = popConfig.populateCloum(data.iloc[:, 0].tolist())
+            else:
+                populate_list = popConfig.populateCloum(data[i].tolist())
+
+            print(populate_list)
             for j in range(len(result_list)):
                 value = populate_list[j]
                 result_list[j].extend([value])
@@ -27,13 +33,22 @@ def integrateData(excl_cloum,data,result_list):
             # 处理完成就删除这个字段避免重复处理出现问题
             splic_list.pop(splic_list.index(i))
             # 加入到里面
+            print("我是result_list")
+            print(result_list[0])
             for j in range(len(result_list)):
+                print(splic_list_data[j])
+                if splic_list_data[j] is None:
+                    result_list[j].extend([None])
+                    continue
                 result_list[j].extend(splic_list_data[j])
+                print(result_list[j])
+
             continue
         elif i in repeating_list:
             repeating_list_data = data[i].values.tolist()
 
             for j in range(len(result_list)):
+
                 result_list[j].extend(repeating_list_data[j])
             repeating_list.pop(repeating_list.index(i))
             continue

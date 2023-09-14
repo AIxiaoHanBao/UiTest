@@ -12,7 +12,10 @@ def integrateData(excl_cloum,data,result_list):
     for i in excl_cloum:
         #自增字段的处理
         if i in uConfig.populate_fields:
-            populate_list = popConfig.populateCloum(data[i].tolist())
+            if False in data[i].duplicated():
+                populate_list = popConfig.populateCloum(data.iloc[:, 0].tolist())
+            else:
+                populate_list = popConfig.populateCloum(data[i].tolist())
             for j in range(len(result_list)):
                 value = populate_list[j]
                 result_list[j].extend([value])
