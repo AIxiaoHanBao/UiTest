@@ -41,13 +41,13 @@ XH_LINE = {
 }
 
 #初始化字典
-def getInit(sheet_name):
+def getInit(sheet_name,path):
     test_diy.clear()
     populate_fields.clear()
     special_fields.clear()
     repeating_fields.clear()
 
-    excl = pd.read_excel("字段表演示.xlsx",sheet_name=sheet_name)
+    excl = pd.read_excel(path,sheet_name=sheet_name)
     excl_list = list(excl)
     print("我是字段")
     print(excl_list)

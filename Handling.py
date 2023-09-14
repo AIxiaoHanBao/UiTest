@@ -29,6 +29,9 @@ def gj_list(gj_list):
     # print(gj_list)
     return gj_list
 
+# def tz_list(tz_list):
+#     for i in tz_list:
+
 
 
 

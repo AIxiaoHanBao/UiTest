@@ -47,7 +47,7 @@ def integrateData(excl_cloum,data,result_list):
 
 
 
-def initData(sheet_name):
+def initData(sheet_name,path):
     mdbConfig.del_table(sheet_name)
 
     # 获取文件
@@ -57,7 +57,7 @@ def initData(sheet_name):
     # print(merged_table.keys())
 
     # 获取到这个表格的字典(直接设置好特殊字段和自增字段
-    uConfig.getInit(sheet_name)
+    uConfig.getInit(sheet_name,path)
     # 获取mdb对应的字段
     table_cloum = list(uConfig.test_diy.keys())
     # 获取excl对应字段
