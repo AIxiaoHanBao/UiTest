@@ -54,11 +54,12 @@ def getInit(sheet_name,path):
 
     excl = pd.read_excel(path,sheet_name=sheet_name)
     excl_list = list(excl)
-    print("我是字段")
-    print(excl_list)
+    # print("我是字段")
+    # print(excl_list)
     column_list=excl.values.tolist()[0]
-    print("我是数据")
-    print(column_list)
+
+    # print("我是数据")
+    # print(column_list)
     for i in list(excl):
         #自增字段
         if len(i.split("*"))==2:

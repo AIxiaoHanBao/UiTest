@@ -20,8 +20,6 @@ def process_fields(name,list):
 
 
 
-
-
 #处理 管经 以及 井盖尺寸
 def gj_list(gj_list):
     for i in gj_list:
@@ -41,8 +39,6 @@ def gj_list(gj_list):
 def tz_list(tz_list):
     file = pd.read_excel("./中文管点附属物对应字母.xlsx",sheet_name="字段")
     data_dict = file.set_index('地面箱式变压器').to_dict()['XB']
-    print("我是当前表222")
-    print(uConfig.now_sheelm)
     list_data = []
     for i in tz_list:
 
@@ -51,8 +47,7 @@ def tz_list(tz_list):
         else:
 
             list_data.append([""+uConfig.now_sheelm.split("_")[0]+data_dict[i]])
-    print("我是list_data")
-    print(list_data)
+
     return list_data
 
 
