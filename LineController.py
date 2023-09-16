@@ -42,6 +42,7 @@ def integrateData(excl_cloum,data,result_list):
 
 def initData(sheet_name,path):
     mdbConfig.del_table(sheet_name)
+    uConfig.now_sheelm = sheet_name
 
     #获取文件
     excl_file = pd.read_excel(uConfig.excl_path, sheet_name=sheet_name)

@@ -10,10 +10,29 @@ def integrateData(excl_cloum,data,result_list):
     #获取特殊字段
     splic_list = uConfig.special_fields.copy()
     repeating_list = uConfig.repeating_fields.copy()
+    populate_list_data = uConfig.populate_fields.copy()
 
     for i in excl_cloum:
+        print(i)
+        if  i in splic_list:
+            # 优先处理特殊字段
+            splic_list_data = handConfig.process_fields(i, data[i].values.tolist())
+            # 处理完成就删除这个字段避免重复处理出现问题
+            splic_list.pop(splic_list.index(i))
+            # 加入到里面
+            print("splic_list")
+            print(i)
+            for j in range(len(result_list)):
+                print(splic_list_data[j])
+                if splic_list_data[j] is None:
+                    result_list[j].extend([None])
+                    continue
+                result_list[j].extend(splic_list_data[j])
+                print(result_list[j])
+
+            continue
         #自增字段的处理
-        if i in uConfig.populate_fields:
+        elif i in populate_list_data:
             #如果自增字段中存在重复的获取其中一列即可
             if False in data[i].duplicated():
                 populate_list = popConfig.populateCloum(data.iloc[:, 0].tolist())
@@ -24,26 +43,10 @@ def integrateData(excl_cloum,data,result_list):
             for j in range(len(result_list)):
                 value = populate_list[j]
                 result_list[j].extend([value])
+            populate_list_data.pop(populate_list_data.index(i))
             continue
 
         # 特殊字段(一般来说特殊字段都是处理了后批量添加(如果后续有处理完单独加入后续防范方法写一下
-        elif i in splic_list:
-            # 处理特殊字段
-            splic_list_data = handConfig.process_fields(i, data[i].values.tolist())
-            # 处理完成就删除这个字段避免重复处理出现问题
-            splic_list.pop(splic_list.index(i))
-            # 加入到里面
-            print("我是result_list")
-            print(result_list[0])
-            for j in range(len(result_list)):
-                print(splic_list_data[j])
-                if splic_list_data[j] is None:
-                    result_list[j].extend([None])
-                    continue
-                result_list[j].extend(splic_list_data[j])
-                print(result_list[j])
-
-            continue
         elif i in repeating_list:
             repeating_list_data = data[i].values.tolist()
 
@@ -64,12 +67,17 @@ def integrateData(excl_cloum,data,result_list):
 
 def initData(sheet_name,path):
     mdbConfig.del_table(sheet_name)
+    uConfig.now_sheelm = sheet_name
 
     # 获取文件
     excl_file1 = pd.read_excel(uConfig.excl_path, sheet_name=sheet_name)
     excl_file2 = pd.read_excel(uConfig.excl_path, sheet_name="收点")
     merged_table = excl_file1.merge(excl_file2[['_id', '北坐标', '东坐标', '高程']], on='_id', how='left')
     # print(merged_table.keys())
+
+    uConfig.now_data_form = merged_table.copy()
+    print("我是 uConfig.now_data_form")
+    print( uConfig.special_fields)
 
     # 获取到这个表格的字典(直接设置好特殊字段和自增字段
     uConfig.getInit(sheet_name,path)

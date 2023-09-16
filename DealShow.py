@@ -159,7 +159,7 @@ class DealShow(object):
         self.progressBar.setValue(99)
         self.information_text.clear()
         self.table_list.setEnabled(False)
-
+        self.all_quary.setEnabled(False)
         self.start_button.setEnabled(False)
         self.thread = DataProcessingThread(self.table_select, self.excl_cloum_path)
         self.thread.taskFinished.connect(self.dataFinash)  # 连接任务完成信号到dataFinash方法
@@ -172,6 +172,7 @@ class DealShow(object):
         self.progressBar.setValue(100)
         self.start_button.setEnabled(True)
         self.table_list.setEnabled(True)
+        self.all_quary.setEnabled(True)
 
         self.information_text.setText("\n"+"插入完成")
         print("任务已完成")
@@ -199,6 +200,7 @@ class DataProcessingThread(QThread):
             total_tables = len(self.table_select)
             for idx, item in enumerate(self.table_select):
                 if re.search(r'_LINE$', item):
+
                     new_list, table_cloum = lineFuncation.initData(item, self.excl_cloum_path)
                     for i in new_list:
                         msg = lineFuncation.getMsg(item, table_cloum, i)
@@ -206,7 +208,11 @@ class DataProcessingThread(QThread):
                     print("Processing _LINE:", item)
                 elif re.search(r'_POINT$', item):
                     new_list, table_cloum = PointFuncation.initData(item, self.excl_cloum_path)
+                    untilConfig.now_sheelm = item
+                    print("我是当前表")
+                    print(untilConfig.now_sheelm)
                     for i in new_list:
+
                         msg = PointFuncation.getMsg(item, table_cloum, i)
                         self.appendInformationText.emit("\n" + msg)
 

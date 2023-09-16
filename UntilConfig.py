@@ -21,6 +21,11 @@ special_fields=[]
 repeating_fields=[]
 
 test_diy={}
+#当前表格名称
+now_sheelm=""
+#当前的dataform
+now_data_form=None
+
 #表格需要添加进入的字段
 XH_LINE = {
     "MSLINK":"_id",
@@ -75,10 +80,9 @@ def getInit(sheet_name,path):
             continue
 
         test_diy[column_list[excl_list.index(i)]] =i
-    print(test_diy)
 
 
 if __name__ == "__main__":
-    getInit(None)
+    getInit("LD_POINT",r"F:\咸鱼项目\8-8咸鱼unet项目\测试\testAccess\newTest\字段表演示(13类).xlsx")
     print(populate_fields)
     print(special_fields)
