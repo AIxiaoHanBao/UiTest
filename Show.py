@@ -111,8 +111,8 @@ class MyDialog(QMainWindow):
 
         if excl_path and mdb_path:
             # Create an instance of ShowDealWindow and set it as the current page in the stackedWidget
-            # self.show_deal_window = createWindow(ShowDealWindow(excl_path, mdb_path),title="上传")
-            self.show_deal_window = ShowDealWindow(excl_path, mdb_path)
+            self.show_deal_window = createWindow(ShowDealWindow(excl_path, mdb_path),title="上传")
+            # self.show_deal_window = ShowDealWindow(excl_path, mdb_path)
             self.show_deal_window.show()
         else:
             QMessageBox.warning(self, "警告", "请先选择数据excl文件和数据库.mdb文件")
@@ -125,13 +125,13 @@ class ShowDealWindow(QMainWindow):
         self.ui.setupUi(self)
 
 
-# from QCandyUi.CandyWindow import createWindow
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    # dialog = createWindow(MyDialog(), title="上传",ico_path="AI.png")
-    dialog = MyDialog()
+    from QCandyUi.CandyWindow import createWindow
+    dialog = createWindow(MyDialog(), title="上传",ico_path="AI.png")
+    # dialog = MyDialog()
     dialog.show()
     sys.exit(app.exec_())
 

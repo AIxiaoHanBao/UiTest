@@ -26,7 +26,7 @@ now_sheelm=""
 #当前的dataform
 now_data_form=None
 
-#表格需要添加进入的字段
+#表格需要添加进入的字段(这里用于测试，实际代码掉用不到)
 XH_LINE = {
     "MSLINK":"_id",
     "GD_ID":"管线段号",

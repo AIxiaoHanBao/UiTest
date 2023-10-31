@@ -35,6 +35,7 @@ def insert_data(sheet_name, fields, values):
     try:
         # 构建INSERT语句
         insert_query = f"INSERT INTO {sheet_name} ({', '.join(fields)}) VALUES ({', '.join(['?' for _ in fields])})"
+        print(insert_query)
         # 执行插入
         cursor = conn.cursor()
         cursor.execute(insert_query, values)

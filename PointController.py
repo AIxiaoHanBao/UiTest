@@ -67,18 +67,26 @@ def initData(sheet_name,path):
 
     # 获取文件
     excl_file1 = pd.read_excel(uConfig.excl_path, sheet_name=sheet_name)
-    excl_file2 = pd.read_excel(uConfig.excl_path, sheet_name="收点")
-    #设置大写
-    excl_file2['物探点号'] = excl_file2['物探点号'].str.upper()
-    merged_table = excl_file1.merge(excl_file2[['物探点号', '北坐标', '东坐标', '高程']], on='物探点号', how='left')
-    # merged_table.to_excel('merged_table.xlsx', index=False)
+    #判断是否属于Point的表格
+    if "X坐标" in excl_file1:
 
-    # print(merged_table.keys())
+        excl_file2 = pd.read_excel(uConfig.excl_path, sheet_name="收点")
+        #设置大写
+        excl_file2['物探点号'] = excl_file2['物探点号'].str.upper()
+        merged_table = excl_file1.merge(excl_file2[['物探点号', '北坐标', '东坐标', '高程']], on='物探点号', how='left')
+        # merged_table.to_excel('merged_table.xlsx', index=False)
+        # print(merged_table.keys())
 
-    uConfig.now_data_form = merged_table.copy()
+        uConfig.now_data_form = merged_table.copy()
 
-    # 获取到这个表格的字典(直接设置好特殊字段和自增字段
-    uConfig.getInit(sheet_name,path)
+        # 获取到这个表格的字典(直接设置好特殊字段和自增字段
+        uConfig.getInit(sheet_name,path)
+    #如果不是Point表那么就
+    else:
+        merged_table = excl_file1.copy()
+        uConfig.getInit(sheet_name, path)
+        uConfig.now_data_form = excl_file1.copy()
+
     # 获取mdb对应的字段
     table_cloum = list(uConfig.test_diy.keys())
     # 获取excl对应字段
@@ -116,7 +124,7 @@ if __name__ == "__main__":
     uConfig.excl_path=r"F:\咸鱼项目\8-8咸鱼unet项目\测试\testAccess\newTest\采集成果.xls"
     uConfig.excl_cloum_path=r"F:\咸鱼项目\8-8咸鱼unet项目\测试\testAccess\newTest\字段表演示.xlsx"
 
-    new_list, table_cloum = initData("XH_POINT")
+    new_list, table_cloum = initData("XH_LINE",uConfig.excl_cloum_path)
 
     #到时候使用for循环读取到msg来显示
-    msg =  getMsg("XH_POINT",table_cloum,new_list[0])
+    msg =  getMsg("XH_LINE",table_cloum,new_list[0])

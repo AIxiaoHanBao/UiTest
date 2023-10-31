@@ -76,7 +76,7 @@ class DealShow(object):
 
 
         # Set initial state
-        self.excl_cloum_text.setEnabled(False)
+        self.excl_cloum_text.setReadOnly(True)
         self.all_quary.setEnabled(True)
         self.start_button.setEnabled(False)
         self.loadExclSheet()
@@ -136,8 +136,9 @@ class DealShow(object):
     def loadExclSheet(self):
         self.table_list.clear()  # Clear existing items
         self.table_list_data = showUntil.getExclSheet(self.excl_path)
-        pattern = r'.*_(LINE|POINT)'
-        filtered_data = [item for item in self.table_list_data if re.match(pattern, item)]
+        # pattern = r'.*_(LINE|POINT)'
+        # filtered_data = [item for item in self.table_list_data if re.match(pattern, item)]
+        filtered_data = [item for item in self.table_list_data if len(item) != 2]
         self.table_list_data = filtered_data.copy()
         self.table_list.addItems(self.table_list_data)
 
@@ -199,22 +200,13 @@ class DataProcessingThread(QThread):
         if len(self.table_select) != 0:
             total_tables = len(self.table_select)
             for idx, item in enumerate(self.table_select):
-                if re.search(r'_LINE$', item):
-
-                    new_list, table_cloum = lineFuncation.initData(item, self.excl_cloum_path)
-                    for i in new_list:
-                        msg = lineFuncation.getMsg(item, table_cloum, i)
-                        self.appendInformationText.emit("\n" + msg)
-                    print("Processing _LINE:", item)
-                elif re.search(r'_POINT$', item):
-                    new_list, table_cloum = PointFuncation.initData(item, self.excl_cloum_path)
-                    untilConfig.now_sheelm = item
-                    print("我是当前表")
-                    print(untilConfig.now_sheelm)
-                    for i in new_list:
-
-                        msg = PointFuncation.getMsg(item, table_cloum, i)
-                        self.appendInformationText.emit("\n" + msg)
+                new_list, table_cloum = PointFuncation.initData(item, self.excl_cloum_path)
+                untilConfig.now_sheelm = item
+                print("我是当前表")
+                print(untilConfig.now_sheelm)
+                for i in new_list:
+                    msg = PointFuncation.getMsg(item, table_cloum, i)
+                    self.appendInformationText.emit("\n" + msg)
 
                 # 更新进度条的值
                 progress_value = (idx + 1) * 100 / total_tables
@@ -231,7 +223,7 @@ class DataProcessingThread(QThread):
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     Form = QtWidgets.QWidget()
-    ui = DealShow(r"F:\咸鱼项目\8-8咸鱼unet项目\测试\testAccess\newTest\采集成果（13类）.xls", r"F:\咸鱼项目\8-8咸鱼unet项目\测试\testAccess\newTest\园区模板null.mdb")  # Replace with your file paths
+    ui = DealShow(r"F:\咸鱼项目\8-8咸鱼unet项目\测试\testAccess\newTest\采集成果.xls", r"F:\咸鱼项目\8-8咸鱼unet项目\测试\testAccess\newTest\园区模板null.mdb")  # Replace with your file paths
     ui.setupUi(Form)
     Form.show()
     sys.exit(app.exec_())
