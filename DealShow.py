@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import UntilConfig as untilConfig
 import ShowUntil as showUntil
 import LineController as lineFuncation
-import PointController as PointFuncation
+import EclController as eclFuncation
 
 
 class DealShow(object):
@@ -200,12 +200,12 @@ class DataProcessingThread(QThread):
         if len(self.table_select) != 0:
             total_tables = len(self.table_select)
             for idx, item in enumerate(self.table_select):
-                new_list, table_cloum = PointFuncation.initData(item, self.excl_cloum_path)
+                new_list, table_cloum = eclFuncation.initData(item, self.excl_cloum_path)
                 untilConfig.now_sheelm = item
                 print("我是当前表")
                 print(untilConfig.now_sheelm)
                 for i in new_list:
-                    msg = PointFuncation.getMsg(item, table_cloum, i)
+                    msg = eclFuncation.getMsg(item, table_cloum, i)
                     self.appendInformationText.emit("\n" + msg)
 
                 # 更新进度条的值
